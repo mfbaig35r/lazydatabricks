@@ -98,6 +98,12 @@ class LazyBricksConfig:
                     f"Profile '{profile}' not found in ~/.databrickscfg. "
                     f"Available: {[p.name for p in profiles]}"
                 )
+        elif profiles:
+            # Auto-select: prefer "default" profile, otherwise use first available
+            target_profile = next(
+                (p for p in profiles if p.name.lower() == "default"),
+                profiles[0] if profiles else None
+            )
 
         # Resolve values with fallback chain
         host = (
