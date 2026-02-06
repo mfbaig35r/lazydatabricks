@@ -4,7 +4,7 @@ All screens inherit from this to get:
 - Access to app-level state (client, guard, ops)
 - Common refresh patterns
 - Error handling
-- Footer bar context action updates
+- Footer bar (rendered per-screen)
 """
 
 from __future__ import annotations
@@ -13,7 +13,7 @@ from typing import TYPE_CHECKING
 
 from textual.screen import Screen
 
-from lazybricks.tui.widgets.footer_bar import HintItem
+from lazybricks.tui.widgets.footer_bar import FooterBar, HintItem
 
 if TYPE_CHECKING:
     from lazybricks.tui.app import LazyBricksApp
@@ -25,8 +25,12 @@ class BaseScreen(Screen):
     Provides:
     - Type-safe access to app instance
     - Common refresh pattern with error handling
-    - Footer bar context action management
+    - Footer bar with context actions
     """
+
+    def __init__(self, *args, **kwargs) -> None:
+        super().__init__(*args, **kwargs)
+        self._footer_bar: FooterBar | None = None
 
     @property
     def lazybricks_app(self) -> "LazyBricksApp":
@@ -46,7 +50,10 @@ class BaseScreen(Screen):
         return self.lazybricks_app.guard
 
     def on_mount(self) -> None:
-        """Called when screen is mounted. Updates footer."""
+        """Called when screen is mounted. Adds footer and updates it."""
+        # Create and mount footer bar
+        self._footer_bar = FooterBar(guard=self.guard)
+        self.mount(self._footer_bar)
         self._update_footer()
 
     def on_screen_resume(self) -> None:
@@ -63,8 +70,9 @@ class BaseScreen(Screen):
 
     def _update_footer(self) -> None:
         """Update footer bar with this screen's context actions."""
-        actions = self.get_context_actions()
-        self.lazybricks_app.update_footer(actions)
+        if self._footer_bar:
+            actions = self.get_context_actions()
+            self._footer_bar.set_context_actions(actions)
 
     def notify_error(self, message: str) -> None:
         """Show an error notification."""

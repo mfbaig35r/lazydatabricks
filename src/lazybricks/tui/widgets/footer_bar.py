@@ -163,7 +163,8 @@ class FooterBar(Widget):
         """Format hint items as styled string."""
         parts = []
         for item in items:
-            parts.append(f"[$primary][{item.key}][/] {item.label}")
+            # Use \[ to escape the opening bracket in Rich markup (raw f-string)
+            parts.append(rf"[$primary]\[{item.key}][/] {item.label}")
         return "  ".join(parts)
 
     def _plain_text(self, markup: str) -> str:

@@ -44,6 +44,7 @@ class HelpOverlay(ModalScreen):
     #help-scroll {
         height: auto;
         max-height: 100%;
+        padding-bottom: 2;
     }
 
     .section-title {
@@ -73,62 +74,62 @@ class HelpOverlay(ModalScreen):
             ScrollableContainer(
                 # Global Navigation
                 Static("Global Navigation", classes="section-title"),
-                Static("  [h]       Home", classes="help-row"),
-                Static("  [c]       Clusters", classes="help-row"),
-                Static("  [j]       Jobs", classes="help-row"),
-                Static("  [w]       Warehouses", classes="help-row"),
-                Static("  [p]       Profiles", classes="help-row"),
-                Static("  [?]       Help", classes="help-row"),
-                Static("  [q]       Quit", classes="help-row"),
+                Static(r"  \[h]       Home", classes="help-row"),
+                Static(r"  \[c]       Clusters", classes="help-row"),
+                Static(r"  \[j]       Jobs", classes="help-row"),
+                Static(r"  \[w]       Warehouses", classes="help-row"),
+                Static(r"  \[p]       Profiles", classes="help-row"),
+                Static(r"  \[?]       Help", classes="help-row"),
+                Static(r"  \[q]       Quit", classes="help-row"),
 
                 # Armed Mode
                 Static("Armed Mode", classes="section-title"),
-                Static("  [A]       Arm (30s countdown)", classes="help-row"),
-                Static("  [Esc]     Disarm (when armed)", classes="help-row"),
+                Static(r"  \[A]       Arm (30s countdown)", classes="help-row"),
+                Static(r"  \[Esc]     Disarm (when armed)", classes="help-row"),
                 Static("  Destructive actions only work when armed.", classes="help-row"),
                 Static("  Footer shows ARMED + countdown when active.", classes="help-row"),
 
                 # Clusters
                 Static("Clusters", classes="section-title"),
-                Static("  [r]       Refresh list", classes="help-row"),
-                Static("  [Enter]   Open in browser", classes="help-row"),
-                Static("  [s]       Start (when armed, if stopped)", classes="help-row"),
-                Static("  [t]       Terminate (when armed, if running)", classes="help-row"),
-                Static("  [R]       Restart (when armed, if running)", classes="help-row"),
+                Static(r"  \[r]       Refresh list", classes="help-row"),
+                Static(r"  \[Enter]   Open in browser", classes="help-row"),
+                Static(r"  \[s]       Start (when armed, if stopped)", classes="help-row"),
+                Static(r"  \[t]       Terminate (when armed, if running)", classes="help-row"),
+                Static(r"  \[R]       Restart (when armed, if running)", classes="help-row"),
 
                 # Jobs
                 Static("Jobs", classes="section-title"),
-                Static("  [Tab]     Switch pane (Jobs/Runs/Detail)", classes="help-row"),
-                Static("  [Enter]   Drill down into selection", classes="help-row"),
-                Static("  [Esc]     Back up one pane", classes="help-row"),
-                Static("  [r]       Refresh", classes="help-row"),
-                Static("  [l]       View logs for selected run", classes="help-row"),
-                Static("  [n]       Run job now (when armed)", classes="help-row"),
-                Static("  [c]       Cancel run (when armed, if active)", classes="help-row"),
-                Static("  [R]       Rerun (when armed, if completed)", classes="help-row"),
+                Static(r"  \[Tab]     Switch pane (Jobs/Runs/Detail)", classes="help-row"),
+                Static(r"  \[Enter]   Drill down into selection", classes="help-row"),
+                Static(r"  \[Esc]     Back up one pane", classes="help-row"),
+                Static(r"  \[r]       Refresh", classes="help-row"),
+                Static(r"  \[l]       View logs for selected run", classes="help-row"),
+                Static(r"  \[n]       Run job now (when armed)", classes="help-row"),
+                Static(r"  \[c]       Cancel run (when armed, if active)", classes="help-row"),
+                Static(r"  \[R]       Rerun (when armed, if completed)", classes="help-row"),
 
                 # Logs
                 Static("Logs", classes="section-title"),
-                Static("  [/]       Search", classes="help-row"),
-                Static("  [n]       Next match", classes="help-row"),
-                Static("  [N]       Previous match", classes="help-row"),
-                Static("  [f]       Cycle filter (ALL/ERROR/WARN+/INFO+)", classes="help-row"),
-                Static("  [g]       Go to top", classes="help-row"),
-                Static("  [G]       Go to bottom", classes="help-row"),
-                Static("  [o]       Open in browser", classes="help-row"),
-                Static("  [Esc]     Close log viewer", classes="help-row"),
+                Static(r"  \[/]       Search", classes="help-row"),
+                Static(r"  \[n]       Next match", classes="help-row"),
+                Static(r"  \[N]       Previous match", classes="help-row"),
+                Static(r"  \[f]       Cycle filter (ALL/ERROR/WARN+/INFO+)", classes="help-row"),
+                Static(r"  \[g]       Go to top", classes="help-row"),
+                Static(r"  \[G]       Go to bottom", classes="help-row"),
+                Static(r"  \[o]       Open in browser", classes="help-row"),
+                Static(r"  \[Esc]     Close log viewer", classes="help-row"),
 
                 # Warehouses
                 Static("Warehouses", classes="section-title"),
-                Static("  [r]       Refresh list", classes="help-row"),
-                Static("  [Enter]   Open in browser", classes="help-row"),
-                Static("  [s]       Start (when armed, if stopped)", classes="help-row"),
-                Static("  [S]       Stop (when armed, if running)", classes="help-row"),
+                Static(r"  \[r]       Refresh list", classes="help-row"),
+                Static(r"  \[Enter]   Open in browser", classes="help-row"),
+                Static(r"  \[s]       Start (when armed, if stopped)", classes="help-row"),
+                Static(r"  \[S]       Stop (when armed, if running)", classes="help-row"),
 
                 # Profiles
                 Static("Profiles", classes="section-title"),
-                Static("  [Enter]   Switch to selected profile", classes="help-row"),
-                Static("  [t]       Test connection", classes="help-row"),
+                Static(r"  \[Enter]   Switch to selected profile", classes="help-row"),
+                Static(r"  \[t]       Test connection", classes="help-row"),
 
                 id="help-scroll",
             ),
