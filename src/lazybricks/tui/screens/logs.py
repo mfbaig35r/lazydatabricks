@@ -13,7 +13,7 @@ from __future__ import annotations
 from textual.app import ComposeResult
 from textual.containers import Container, Vertical
 from textual.widgets import Static, Input, RichLog
-from textual.worker import work
+from textual import work
 from textual.binding import Binding
 
 from lazybricks.api.logs import LogBlock, LogLine, LogSeverity

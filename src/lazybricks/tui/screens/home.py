@@ -12,7 +12,7 @@ from __future__ import annotations
 from textual.app import ComposeResult
 from textual.containers import Container, Vertical
 from textual.widgets import Static
-from textual.worker import Worker, work
+from textual import work
 
 from lazybricks.models.health import HealthSnapshot
 from lazybricks.tui.screens.base import BaseScreen

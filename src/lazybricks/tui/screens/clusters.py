@@ -11,7 +11,7 @@ from __future__ import annotations
 from textual.app import ComposeResult
 from textual.containers import Container, Horizontal, Vertical
 from textual.widgets import DataTable, Static
-from textual.worker import work
+from textual import work
 
 from lazybricks.models.cluster import ClusterSummary, ClusterState
 from lazybricks.tui.screens.base import BaseScreen
