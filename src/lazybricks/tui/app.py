@@ -19,6 +19,7 @@ from lazybricks.api.guard import ArmedGuard
 from lazybricks.api.health import HealthBuilder
 from lazybricks.api.jobs import JobOps
 from lazybricks.api.logs import LogOps
+from lazybricks.api.pipelines import PipelineOps
 from lazybricks.api.warehouses import WarehouseOps
 from lazybricks.tui.theme_config import get_css, get_theme
 from lazybricks.tui.widgets.header import Header
@@ -33,9 +34,10 @@ class LazyBricksApp(App):
         Binding("h", "go_home", "Home", show=False),
         Binding("c", "go_clusters", "Clusters", show=False),
         Binding("j", "go_jobs", "Jobs", show=False),
+        Binding("p", "go_pipelines", "Pipelines", show=False),
         Binding("w", "go_warehouses", "Warehouses", show=False),
         Binding("l", "go_logs", "Logs", show=False),
-        Binding("p", "go_config", "Config/Profiles", show=False),
+        Binding("P", "go_config", "Config/Profiles", show=False),
         Binding("A", "toggle_armed", "Arm/Disarm", show=False),
         Binding("question_mark", "show_help", "Help", show=False),
         Binding("q", "quit", "Quit", show=False),
@@ -57,6 +59,7 @@ class LazyBricksApp(App):
         # Operations instances
         self._cluster_ops = ClusterOps(client)
         self._job_ops = JobOps(client)
+        self._pipeline_ops = PipelineOps(client)
         self._warehouse_ops = WarehouseOps(client)
         self._log_ops = LogOps(client)
         self._health_builder = HealthBuilder(client)
@@ -83,6 +86,11 @@ class LazyBricksApp(App):
     def job_ops(self) -> JobOps:
         """Job operations."""
         return self._job_ops
+
+    @property
+    def pipeline_ops(self) -> PipelineOps:
+        """Pipeline operations."""
+        return self._pipeline_ops
 
     @property
     def warehouse_ops(self) -> WarehouseOps:
@@ -122,12 +130,14 @@ class LazyBricksApp(App):
         from lazybricks.tui.screens.home import HomeScreen
         from lazybricks.tui.screens.clusters import ClustersScreen
         from lazybricks.tui.screens.jobs import JobsScreen
+        from lazybricks.tui.screens.pipelines import PipelinesScreen
         from lazybricks.tui.screens.warehouses import WarehousesScreen
         from lazybricks.tui.screens.config import ConfigScreen
 
         self.install_screen(HomeScreen(), name="home")
         self.install_screen(ClustersScreen(), name="clusters")
         self.install_screen(JobsScreen(), name="jobs")
+        self.install_screen(PipelinesScreen(), name="pipelines")
         self.install_screen(WarehousesScreen(), name="warehouses")
         self.install_screen(ConfigScreen(), name="config")
 
@@ -155,6 +165,10 @@ class LazyBricksApp(App):
     def action_go_jobs(self) -> None:
         """Navigate to jobs screen."""
         self.switch_screen("jobs")
+
+    def action_go_pipelines(self) -> None:
+        """Navigate to pipelines screen."""
+        self.switch_screen("pipelines")
 
     def action_go_warehouses(self) -> None:
         """Navigate to warehouses screen."""

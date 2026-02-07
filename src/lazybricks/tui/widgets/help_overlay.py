@@ -77,8 +77,9 @@ class HelpOverlay(ModalScreen):
                 Static(r"  \[h]       Home", classes="help-row"),
                 Static(r"  \[c]       Clusters", classes="help-row"),
                 Static(r"  \[j]       Jobs", classes="help-row"),
+                Static(r"  \[p]       Pipelines", classes="help-row"),
                 Static(r"  \[w]       Warehouses", classes="help-row"),
-                Static(r"  \[p]       Profiles", classes="help-row"),
+                Static(r"  \[P]       Profiles", classes="help-row"),
                 Static(r"  \[?]       Help", classes="help-row"),
                 Static(r"  \[q]       Quit", classes="help-row"),
 
@@ -107,6 +108,16 @@ class HelpOverlay(ModalScreen):
                 Static(r"  \[n]       Run job now (when armed)", classes="help-row"),
                 Static(r"  \[c]       Cancel run (when armed, if active)", classes="help-row"),
                 Static(r"  \[R]       Rerun (when armed, if completed)", classes="help-row"),
+
+                # Pipelines
+                Static("Pipelines", classes="section-title"),
+                Static(r"  \[Tab]     Switch pane (Pipelines/Updates/Detail)", classes="help-row"),
+                Static(r"  \[Enter]   Drill down into selection", classes="help-row"),
+                Static(r"  \[Esc]     Back up one pane", classes="help-row"),
+                Static(r"  \[r]       Refresh", classes="help-row"),
+                Static(r"  \[s]       Start update (when armed, if idle)", classes="help-row"),
+                Static(r"  \[S]       Stop pipeline (when armed, if running)", classes="help-row"),
+                Static(r"  \[f]       Full refresh (when armed, if idle)", classes="help-row"),
 
                 # Logs
                 Static("Logs", classes="section-title"),

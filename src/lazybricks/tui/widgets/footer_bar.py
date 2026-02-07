@@ -34,8 +34,9 @@ GLOBAL_NAV: list[HintItem] = [
     HintItem("h", "Home"),
     HintItem("c", "Clusters"),
     HintItem("j", "Jobs"),
+    HintItem("p", "Pipelines"),
     HintItem("w", "Warehouses"),
-    HintItem("p", "Profiles"),
+    HintItem("P", "Profiles"),
     HintItem("?", "Help"),
     HintItem("q", "Quit"),
 ]

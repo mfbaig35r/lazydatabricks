@@ -81,7 +81,9 @@ GLOBAL_BINDINGS = [
     ("h", "home"),
     ("c", "clusters"),
     ("j", "jobs"),
+    ("p", "pipelines"),
     ("w", "warehouses"),
+    ("P", "profiles"),
     ("A", "arm"),
     ("?", "help"),
     ("q", "quit"),
@@ -115,6 +117,16 @@ JOBS_BINDINGS = [
     ("c", "cancel"),
     ("R", "rerun"),
     ("l", "logs"),
+    ("r", "refresh"),
+]
+
+PIPELINES_BINDINGS = [
+    ("Enter", "select"),
+    ("Tab", "pane"),
+    ("Esc", "back"),
+    ("s", "start"),
+    ("S", "stop"),
+    ("f", "full refresh"),
     ("r", "refresh"),
 ]
 

@@ -9,6 +9,7 @@ from lazybricks.tui.widgets.status_bar import (
     HOME_BINDINGS,
     CLUSTERS_BINDINGS,
     JOBS_BINDINGS,
+    PIPELINES_BINDINGS,
     LOGS_BINDINGS,
     WAREHOUSES_BINDINGS,
     CONFIG_BINDINGS,
@@ -25,7 +26,9 @@ class TestKeybindings:
         assert "h" in keys  # home
         assert "c" in keys  # clusters
         assert "j" in keys  # jobs
+        assert "p" in keys  # pipelines
         assert "w" in keys  # warehouses
+        assert "P" in keys  # profiles
         assert "A" in keys  # arm
         assert "?" in keys  # help
         assert "q" in keys  # quit
@@ -55,6 +58,20 @@ class TestKeybindings:
         assert "n" in keys  # run now
         assert "c" in keys  # cancel
         assert "R" in keys  # rerun
+
+    def test_pipelines_bindings_include_navigation(self) -> None:
+        """Pipelines bindings should include pane navigation."""
+        keys = [k for k, _ in PIPELINES_BINDINGS]
+        assert "Tab" in keys
+        assert "Enter" in keys
+        assert "Esc" in keys
+
+    def test_pipelines_bindings_include_actions(self) -> None:
+        """Pipelines bindings should include pipeline actions."""
+        keys = [k for k, _ in PIPELINES_BINDINGS]
+        assert "s" in keys  # start
+        assert "S" in keys  # stop
+        assert "f" in keys  # full refresh
 
     def test_logs_bindings_include_search(self) -> None:
         """Logs bindings should include search."""
@@ -87,6 +104,7 @@ class TestKeybindings:
             HOME_BINDINGS,
             CLUSTERS_BINDINGS,
             JOBS_BINDINGS,
+            PIPELINES_BINDINGS,
             LOGS_BINDINGS,
             WAREHOUSES_BINDINGS,
             CONFIG_BINDINGS,
