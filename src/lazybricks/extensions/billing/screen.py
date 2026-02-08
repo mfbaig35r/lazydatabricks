@@ -215,17 +215,19 @@ class BillingScreen(BaseScreen):
     def _select_sku(self, sku: SkuCostSummary) -> None:
         """Select a SKU and load its breakdown."""
         self._selected_sku = sku
-        self._load_breakdown(sku.sku_name)
+        self._load_breakdown(sku.sku_name, sku.usage_type, sku.billing_origin_product)
 
     @work(thread=True)
-    def _load_breakdown(self, sku_name: str) -> None:
+    def _load_breakdown(self, sku_name: str, usage_type: str, billing_origin_product: str) -> None:
         """Load usage breakdown for selected SKU."""
         try:
             billing_ops = self.lazybricks_app.get_extension_ops("billing")
             if not billing_ops:
                 return
 
-            breakdowns = billing_ops.get_usage_breakdown(sku_name, self._time_window)
+            breakdowns = billing_ops.get_usage_breakdown(
+                sku_name, usage_type, billing_origin_product, self._time_window
+            )
             self.app.call_from_thread(self._update_breakdown_table, breakdowns)
         except Exception as e:
             self.app.call_from_thread(self.notify_error, f"Failed to load breakdown: {e}")
@@ -236,13 +238,13 @@ class BillingScreen(BaseScreen):
         table = self.query_one("#breakdown-table", DataTable)
         table.clear()
 
-        for item in breakdowns:
+        for i, item in enumerate(breakdowns):
             table.add_row(
                 item.resource_display,
                 item.workspace_id[:12] if item.workspace_id else "—",
                 item.dbu_display,
                 f"[green]{item.cost_display}[/]",
-                key=f"{item.workspace_id}:{item.resource_id or 'unknown'}",
+                key=f"{i}",
             )
 
         if breakdowns:
@@ -330,21 +332,13 @@ class BillingScreen(BaseScreen):
             if sku:
                 self._select_sku(sku)
         elif table.id == "breakdown-table" and event.row_key and event.row_key.value:
-            # Key format: "workspace_id:resource_id"
-            parts = event.row_key.value.split(":", 1)
-            if len(parts) == 2:
-                ws_id, res_id = parts
-                breakdown = next(
-                    (
-                        b
-                        for b in self._breakdowns
-                        if b.workspace_id == ws_id
-                        and (b.resource_id or "unknown") == res_id
-                    ),
-                    None,
-                )
-                if breakdown:
-                    self._select_breakdown(breakdown)
+            # Key is the index into self._breakdowns
+            try:
+                idx = int(event.row_key.value)
+                if 0 <= idx < len(self._breakdowns):
+                    self._select_breakdown(self._breakdowns[idx])
+            except (ValueError, IndexError):
+                pass
 
     # ─── Actions ────────────────────────────────────────────────
 

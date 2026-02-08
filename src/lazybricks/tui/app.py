@@ -166,10 +166,19 @@ class LazyBricksApp(App):
         self.install_screen(WarehousesScreen(), name="warehouses")
         self.install_screen(ConfigScreen(), name="config")
 
-        # Install extension screens
+        # Install extension screens and register keybindings
         for ext in self._extensions:
             screen_class = ext.get_screen_class()
             self.install_screen(screen_class(), name=ext.info.name)
+
+            # Register extension keybinding
+            for binding in ext.get_bindings():
+                self.bind(
+                    binding.key,
+                    binding.action,
+                    description=binding.description,
+                    show=binding.show,
+                )
 
         # Start on home screen
         self.push_screen("home")

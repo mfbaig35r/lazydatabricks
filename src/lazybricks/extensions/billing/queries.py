@@ -88,15 +88,19 @@ usage AS (
     usage_unit,
     usage_start_time,
     usage_quantity,
-    usage_metadata.cluster_id   AS cluster_id,
-    usage_metadata.warehouse_id AS warehouse_id,
-    usage_metadata.job_id       AS job_id,
-    usage_metadata.job_run_id   AS job_run_id,
-    custom_tags.x_Creator       AS creator,
-    custom_tags.x_ResourceClass AS resource_class
+    usage_metadata.cluster_id       AS cluster_id,
+    usage_metadata.warehouse_id     AS warehouse_id,
+    usage_metadata.job_id           AS job_id,
+    usage_metadata.job_run_id       AS job_run_id,
+    usage_metadata.dlt_pipeline_id  AS pipeline_id,
+    usage_metadata.notebook_id      AS notebook_id,
+    custom_tags.x_Creator           AS creator,
+    custom_tags.x_ResourceClass     AS resource_class
   FROM system.billing.usage
   WHERE usage_unit = 'DBU'
     AND sku_name = :sku_name
+    AND usage_type = :usage_type
+    AND billing_origin_product = :billing_origin_product
     AND usage_date >= DATE(:window_start)
     AND usage_date < DATE(:window_end)
 )
@@ -106,6 +110,8 @@ SELECT
   warehouse_id,
   job_id,
   job_run_id,
+  pipeline_id,
+  notebook_id,
   creator,
   resource_class,
   SUM(usage_quantity) AS total_dbu,
@@ -119,7 +125,7 @@ LEFT JOIN prices p
   AND u.usage_unit = p.usage_unit
   AND u.usage_start_time >= p.price_start_time
   AND u.usage_start_time <  p.price_end_time
-GROUP BY workspace_id, cluster_id, warehouse_id, job_id, job_run_id, creator, resource_class
+GROUP BY workspace_id, cluster_id, warehouse_id, job_id, job_run_id, pipeline_id, notebook_id, creator, resource_class
 ORDER BY estimated_cost DESC NULLS LAST
 LIMIT 200
 """

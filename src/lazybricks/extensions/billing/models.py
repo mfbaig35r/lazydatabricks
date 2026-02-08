@@ -111,6 +111,8 @@ class UsageBreakdown:
     warehouse_id: Optional[str] = None
     job_id: Optional[str] = None
     job_run_id: Optional[str] = None
+    pipeline_id: Optional[str] = None
+    notebook_id: Optional[str] = None
     creator: Optional[str] = None
     resource_class: Optional[str] = None
     total_dbu: Decimal = field(default_factory=lambda: Decimal(0))
@@ -120,7 +122,7 @@ class UsageBreakdown:
     @property
     def resource_id(self) -> Optional[str]:
         """Return the primary resource identifier."""
-        return self.cluster_id or self.warehouse_id or self.job_id
+        return self.cluster_id or self.warehouse_id or self.job_id or self.pipeline_id or self.notebook_id
 
     @property
     def resource_type(self) -> Optional[str]:
@@ -131,6 +133,10 @@ class UsageBreakdown:
             return "warehouse"
         if self.job_id:
             return "job"
+        if self.pipeline_id:
+            return "pipeline"
+        if self.notebook_id:
+            return "notebook"
         return None
 
     @property
@@ -142,6 +148,12 @@ class UsageBreakdown:
             return self.warehouse_id[:16]
         if self.job_id:
             return f"job-{self.job_id}"
+        if self.pipeline_id:
+            return f"pipeline-{self.pipeline_id[:8]}"
+        if self.notebook_id:
+            return f"notebook-{self.notebook_id[:8]}"
+        if self.creator:
+            return f"[{self.creator[:16]}]"
         return "[unknown]"
 
     @property
@@ -165,6 +177,8 @@ class UsageBreakdown:
             warehouse_id=row.get("warehouse_id"),
             job_id=str(row.get("job_id")) if row.get("job_id") else None,
             job_run_id=str(row.get("job_run_id")) if row.get("job_run_id") else None,
+            pipeline_id=row.get("pipeline_id"),
+            notebook_id=row.get("notebook_id"),
             creator=row.get("creator"),
             resource_class=row.get("resource_class"),
             total_dbu=_to_decimal(row.get("total_dbu")),

@@ -11,6 +11,8 @@ from datetime import datetime, timedelta, timezone
 from decimal import Decimal
 from typing import Optional
 
+from databricks.sdk.service.sql import StatementParameterListItem
+
 from lazybricks.api.client import DatabricksClient
 from lazybricks.extensions.billing.models import (
     SkuCostSummary,
@@ -44,7 +46,7 @@ class BillingOps:
         self,
         query: str,
         parameters: Optional[list[dict]] = None,
-        timeout_seconds: int = 60,
+        timeout_seconds: int = 50,
     ) -> list[dict]:
         """Execute SQL via Statement Execution API.
 
@@ -65,7 +67,11 @@ class BillingOps:
             params = None
             if parameters:
                 params = [
-                    {"name": p["name"], "value": str(p["value"]), "type": "STRING"}
+                    StatementParameterListItem(
+                        name=p["name"],
+                        value=str(p["value"]),
+                        type="STRING",
+                    )
                     for p in parameters
                 ]
 
@@ -165,7 +171,7 @@ class BillingOps:
             {"name": "window_end", "value": end.strftime("%Y-%m-%d")},
         ]
 
-        rows = self._execute_query(SKU_COST_QUERY, params, timeout_seconds=60)
+        rows = self._execute_query(SKU_COST_QUERY, params, timeout_seconds=50)
 
         summaries = []
         for row in rows:
@@ -179,12 +185,16 @@ class BillingOps:
     def get_usage_breakdown(
         self,
         sku_name: str,
+        usage_type: str,
+        billing_origin_product: str,
         window: TimeWindow,
     ) -> list[UsageBreakdown]:
         """Get usage breakdown by compute target for a specific SKU.
 
         Args:
             sku_name: SKU to get breakdown for.
+            usage_type: Usage type to filter by.
+            billing_origin_product: Billing origin product to filter by.
             window: Time window to query.
 
         Returns:
@@ -194,11 +204,13 @@ class BillingOps:
 
         params = [
             {"name": "sku_name", "value": sku_name},
+            {"name": "usage_type", "value": usage_type},
+            {"name": "billing_origin_product", "value": billing_origin_product},
             {"name": "window_start", "value": start.strftime("%Y-%m-%d")},
             {"name": "window_end", "value": end.strftime("%Y-%m-%d")},
         ]
 
-        rows = self._execute_query(BREAKDOWN_QUERY, params, timeout_seconds=60)
+        rows = self._execute_query(BREAKDOWN_QUERY, params, timeout_seconds=50)
 
         breakdowns = []
         for row in rows:
@@ -230,7 +242,7 @@ class BillingOps:
             {"name": "window_end", "value": end.strftime("%Y-%m-%d")},
         ]
 
-        rows = self._execute_query(TOTAL_COST_QUERY, params, timeout_seconds=60)
+        rows = self._execute_query(TOTAL_COST_QUERY, params, timeout_seconds=50)
 
         if rows and rows[0].get("total_cost"):
             try:
