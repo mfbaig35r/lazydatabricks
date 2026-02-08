@@ -51,8 +51,17 @@ class BaseScreen(Screen):
 
     def on_mount(self) -> None:
         """Called when screen is mounted. Adds footer and updates it."""
+        # Build extension hints for footer
+        extension_hints = [
+            HintItem(ext.info.hotkey, ext.info.display_name)
+            for ext in self.lazybricks_app.extensions
+        ]
+
         # Create and mount footer bar
-        self._footer_bar = FooterBar(guard=self.guard)
+        self._footer_bar = FooterBar(
+            guard=self.guard,
+            extension_hints=extension_hints,
+        )
         self.mount(self._footer_bar)
         self._update_footer()
 

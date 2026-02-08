@@ -29,17 +29,36 @@ class HintItem:
     destructive: bool = False  # Show only in armed mode
 
 
-# Global navigation items (shared across all screens)
-GLOBAL_NAV: list[HintItem] = [
+# Core navigation items (extensions are inserted dynamically)
+CORE_NAV_START: list[HintItem] = [
     HintItem("h", "Home"),
     HintItem("c", "Clusters"),
     HintItem("j", "Jobs"),
     HintItem("p", "Pipelines"),
     HintItem("w", "Warehouses"),
+]
+
+CORE_NAV_END: list[HintItem] = [
     HintItem("P", "Profiles"),
     HintItem("?", "Help"),
     HintItem("q", "Quit"),
 ]
+
+
+def build_global_nav(extension_hints: list[HintItem] | None = None) -> list[HintItem]:
+    """Build global nav including extension items.
+
+    Extension hints are inserted between core nav and Profiles/Help/Quit.
+    """
+    nav = list(CORE_NAV_START)
+    if extension_hints:
+        nav.extend(extension_hints)
+    nav.extend(CORE_NAV_END)
+    return nav
+
+
+# Default global nav (without extensions)
+GLOBAL_NAV: list[HintItem] = build_global_nav()
 
 
 class FooterBar(Widget):
@@ -70,11 +89,14 @@ class FooterBar(Widget):
         self,
         guard: "ArmedGuard | None" = None,
         context_actions: list[HintItem] | None = None,
+        extension_hints: list[HintItem] | None = None,
         **kwargs
     ) -> None:
         super().__init__(**kwargs)
         self._guard = guard
         self.context_actions = context_actions or []
+        self._extension_hints = extension_hints or []
+        self._global_nav = build_global_nav(self._extension_hints)
 
     def compose(self) -> ComposeResult:
         yield Static("", id="footer-content")
@@ -115,7 +137,7 @@ class FooterBar(Widget):
         width = self.size.width or 80
 
         # Build left zone (global nav)
-        left_items = self._format_items(GLOBAL_NAV)
+        left_items = self._format_items(self._global_nav)
 
         # Build right zone (context actions)
         if self.is_armed:

@@ -4,10 +4,13 @@ This is the entry point for the Textual TUI. It owns:
 - DatabricksClient instance
 - ArmedGuard instance
 - All operations instances (ClusterOps, JobOps, etc.)
+- Extensions (optional feature sets)
 - Global keybindings and screen routing
 """
 
 from __future__ import annotations
+
+from typing import Any
 
 from textual.app import App, ComposeResult
 from textual.binding import Binding
@@ -21,6 +24,8 @@ from lazybricks.api.jobs import JobOps
 from lazybricks.api.logs import LogOps
 from lazybricks.api.pipelines import PipelineOps
 from lazybricks.api.warehouses import WarehouseOps
+from lazybricks.extensions import load_extensions, load_lazybricks_config
+from lazybricks.extensions.base import BaseExtension
 from lazybricks.tui.theme_config import get_css, get_theme
 from lazybricks.tui.widgets.header import Header
 
@@ -63,6 +68,17 @@ class LazyBricksApp(App):
         self._warehouse_ops = WarehouseOps(client)
         self._log_ops = LogOps(client)
         self._health_builder = HealthBuilder(client)
+
+        # Load LazyBricks config and extensions
+        self._lazybricks_config = load_lazybricks_config()
+        self._extensions = load_extensions(client, self._lazybricks_config)
+        self._extension_ops: dict[str, Any] = {}
+
+        # Create ops instances for each extension
+        for ext in self._extensions:
+            ext_config = self._lazybricks_config.get("extensions", {}).get(ext.info.name, {})
+            ops_class = ext.get_ops_class()
+            self._extension_ops[ext.info.name] = ops_class(client, ext_config)
 
         # Widgets (created in compose)
         self._header: Header | None = None
@@ -107,6 +123,15 @@ class LazyBricksApp(App):
         """Health snapshot builder."""
         return self._health_builder
 
+    @property
+    def extensions(self) -> list[BaseExtension]:
+        """Loaded extensions."""
+        return self._extensions
+
+    def get_extension_ops(self, name: str) -> Any | None:
+        """Get ops instance for an extension by name."""
+        return self._extension_ops.get(name)
+
     def compose(self) -> ComposeResult:
         """Compose the app layout."""
         # Get workspace info for header
@@ -126,7 +151,7 @@ class LazyBricksApp(App):
 
     def on_mount(self) -> None:
         """Called when app is mounted."""
-        # Install screens
+        # Install core screens
         from lazybricks.tui.screens.home import HomeScreen
         from lazybricks.tui.screens.clusters import ClustersScreen
         from lazybricks.tui.screens.jobs import JobsScreen
@@ -140,6 +165,11 @@ class LazyBricksApp(App):
         self.install_screen(PipelinesScreen(), name="pipelines")
         self.install_screen(WarehousesScreen(), name="warehouses")
         self.install_screen(ConfigScreen(), name="config")
+
+        # Install extension screens
+        for ext in self._extensions:
+            screen_class = ext.get_screen_class()
+            self.install_screen(screen_class(), name=ext.info.name)
 
         # Start on home screen
         self.push_screen("home")
@@ -217,6 +247,31 @@ class LazyBricksApp(App):
     def action_quit(self) -> None:
         """Quit the application."""
         self.exit()
+
+    def __getattr__(self, name: str) -> Any:
+        """Handle dynamic action methods for extensions.
+
+        Allows extension navigation like action_go_billing without
+        explicitly defining each method.
+        """
+        if name.startswith("action_go_"):
+            ext_name = name[len("action_go_"):]
+            # Check if this is an extension
+            if any(ext.info.name == ext_name for ext in self._extensions):
+                return lambda: self.switch_screen(ext_name)
+
+        raise AttributeError(f"'{type(self).__name__}' object has no attribute '{name}'")
+
+    def check_action(self, action: str, parameters: tuple[object, ...]) -> bool | None:
+        """Check if an action is valid, including dynamic extension actions."""
+        # Handle extension navigation actions
+        if action.startswith("go_"):
+            ext_name = action[3:]
+            if any(ext.info.name == ext_name for ext in self._extensions):
+                return True
+
+        # Defer to parent for all other actions
+        return super().check_action(action, parameters)
 
 
 def run_tui(client: DatabricksClient) -> None:
