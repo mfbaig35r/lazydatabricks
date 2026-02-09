@@ -113,7 +113,7 @@ Keep existing CLI subcommands (health, clusters, jobs, test) working.
 ├──────────────────────────────────────────────────┤
 │                                                  │
 │  Workspace:  https://dbc-xxxxx.cloud.databricks  │
-│  User:       fahad@company.com                   │
+│  User:       user@example.com                   │
 │  Spark:      ✓ Spark OK — main (v3.5.0)          │
 │                                                  │
 │  ── Clusters ──────────────────────────────────  │

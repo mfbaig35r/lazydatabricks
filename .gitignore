@@ -31,3 +31,8 @@ htmlcov/
 
 # Build
 uv.lock
+
+# Next.js (docs site)
+.next/
+out/
+node_modules/

@@ -1,14 +1,14 @@
-# LazyBricks Marketing Website Requirements
+# LazyDatabricks Marketing Website Requirements
 
 **Domain:** lazydatabricks.com
 **Stack:** Next.js 14+ (App Router), Fumadocs, Tailwind CSS
-**Purpose:** Marketing site + documentation for LazyBricks TUI
+**Purpose:** Marketing site + documentation for LazyDatabricks TUI
 
 ---
 
 ## 1. Project Overview
 
-LazyBricks is a terminal UI (TUI) for Databricks that provides keyboard-driven management of clusters, jobs, pipelines, warehouses, and billing. The website needs to:
+LazyDatabricks is a terminal UI (TUI) for Databricks that provides keyboard-driven management of clusters, jobs, pipelines, warehouses, and billing. The website needs to:
 
 1. **Market** the tool to Databricks users (platform engineers, data engineers, MLOps)
 2. **Document** installation, configuration, and usage
@@ -58,7 +58,7 @@ LazyBricks is a terminal UI (TUI) for Databricks that provides keyboard-driven m
 **Hero Section:**
 - Tagline: "The Lazy Way to Manage Databricks" or similar
 - Subtitle: "A keyboard-driven TUI for clusters, jobs, pipelines & billing"
-- Terminal animation showing LazyBricks in action (asciinema or animated SVG)
+- Terminal animation showing LazyDatabricks in action (asciinema or animated SVG)
 - Primary CTA: "Get Started" → `/docs/getting-started`
 - Secondary CTA: "View on GitHub" → repo link
 
@@ -71,7 +71,7 @@ LazyBricks is a terminal UI (TUI) for Databricks that provides keyboard-driven m
   5. **Billing** - DBU cost visibility by SKU and resource
   6. **Armed Mode** - Safety guard for destructive actions
 
-**Why LazyBricks Section:**
+**Why LazyDatabricks Section:**
 - Speed comparison (TUI vs. clicking through UI)
 - Works over SSH / in containers
 - No browser required
@@ -79,8 +79,8 @@ LazyBricks is a terminal UI (TUI) for Databricks that provides keyboard-driven m
 
 **Installation Snippet:**
 ```bash
-pip install lazybricks
-lazybricks
+pip install lazydatabricks
+lazydatabricks
 ```
 
 **Footer:**
@@ -104,7 +104,7 @@ Use Fumadocs for:
 | Page | Content |
 |------|---------|
 | Getting Started | pip install, first launch, auth setup |
-| Configuration | `~/.lazybricks/config.toml`, profiles, themes |
+| Configuration | `~/.lazydatabricks/config.toml`, profiles, themes |
 | Clusters | Screen walkthrough, keybindings, armed actions |
 | Jobs | Three-pane layout, run history, logs |
 | Pipelines | DLT updates, full refresh, stop |
@@ -130,11 +130,11 @@ Use Fumadocs for:
 
 | Element | Specification |
 |---------|---------------|
-| Primary Color | `#e94560` (LazyBricks red) |
+| Primary Color | `#e94560` (LazyDatabricks red) |
 | Background | Dark theme default (`#0f0f0f` or similar) |
 | Font (headings) | JetBrains Mono or similar monospace |
 | Font (body) | Inter or system fonts |
-| Terminal styling | Match LazyBricks TUI aesthetic |
+| Terminal styling | Match LazyDatabricks TUI aesthetic |
 
 ### 5.2 Components
 
