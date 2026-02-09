@@ -45,7 +45,6 @@ usage AS (
 SELECT
   u.sku_name,
   u.usage_type,
-  u.billing_origin_product,
   SUM(u.usage_quantity) AS total_dbu,
   MAX(p.unit_price_effective) AS unit_price_effective,
   SUM(u.usage_quantity) * MAX(p.unit_price_effective) AS estimated_cost,
@@ -63,7 +62,7 @@ LEFT JOIN prices p
   AND u.usage_unit = p.usage_unit
   AND u.usage_start_time >= p.price_start_time
   AND u.usage_start_time <  p.price_end_time
-GROUP BY u.sku_name, u.usage_type, u.billing_origin_product
+GROUP BY u.sku_name, u.usage_type
 ORDER BY estimated_cost DESC NULLS LAST
 LIMIT 50
 """
@@ -100,7 +99,6 @@ usage AS (
   WHERE usage_unit = 'DBU'
     AND sku_name = :sku_name
     AND usage_type = :usage_type
-    AND billing_origin_product = :billing_origin_product
     AND usage_date >= DATE(:window_start)
     AND usage_date < DATE(:window_end)
 )

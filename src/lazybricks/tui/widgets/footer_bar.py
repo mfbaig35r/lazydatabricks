@@ -106,6 +106,10 @@ class FooterBar(Widget):
         self.set_interval(1.0, self._refresh_armed_state)
         self._render_footer()
 
+    def on_resize(self) -> None:
+        """Re-render when widget size changes."""
+        self._render_footer()
+
     def _refresh_armed_state(self) -> None:
         """Update armed state from guard."""
         if self._guard:

@@ -55,7 +55,6 @@ class SkuCostSummary:
     """SKU-level cost summary for left pane."""
     sku_name: str
     usage_type: str
-    billing_origin_product: str
     total_dbu: Decimal
     unit_price_effective: Decimal
     estimated_cost: Decimal
@@ -93,7 +92,6 @@ class SkuCostSummary:
         return cls(
             sku_name=row.get("sku_name") or "",
             usage_type=row.get("usage_type") or "",
-            billing_origin_product=row.get("billing_origin_product") or "",
             total_dbu=_to_decimal(row.get("total_dbu")),
             unit_price_effective=_to_decimal(row.get("unit_price_effective")),
             estimated_cost=_to_decimal(row.get("estimated_cost")),

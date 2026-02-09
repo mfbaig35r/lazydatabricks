@@ -186,7 +186,6 @@ class BillingOps:
         self,
         sku_name: str,
         usage_type: str,
-        billing_origin_product: str,
         window: TimeWindow,
     ) -> list[UsageBreakdown]:
         """Get usage breakdown by compute target for a specific SKU.
@@ -194,7 +193,6 @@ class BillingOps:
         Args:
             sku_name: SKU to get breakdown for.
             usage_type: Usage type to filter by.
-            billing_origin_product: Billing origin product to filter by.
             window: Time window to query.
 
         Returns:
@@ -205,7 +203,6 @@ class BillingOps:
         params = [
             {"name": "sku_name", "value": sku_name},
             {"name": "usage_type", "value": usage_type},
-            {"name": "billing_origin_product", "value": billing_origin_product},
             {"name": "window_start", "value": start.strftime("%Y-%m-%d")},
             {"name": "window_end", "value": end.strftime("%Y-%m-%d")},
         ]

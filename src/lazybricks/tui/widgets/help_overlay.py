@@ -74,6 +74,14 @@ class HelpOverlay(ModalScreen):
     }
     """
 
+    def _format_key_row(self, key: str, desc: str) -> str:
+        """Format a key binding row with consistent alignment."""
+        # Target: descriptions start at column 12 (after 2-space indent)
+        key_part = rf"\[{key}]"
+        # Calculate padding: 10 chars for key area (e.g., "[Enter]   ")
+        padding = max(1, 10 - len(key) - 2)  # -2 for the brackets
+        return f"  {key_part}{' ' * padding}{desc}"
+
     def _get_extension_nav_items(self) -> list[Static]:
         """Get navigation items for loaded extensions."""
         items = []
@@ -83,7 +91,7 @@ class HelpOverlay(ModalScreen):
                 for ext in self.app.extensions:
                     key = ext.info.hotkey
                     label = ext.info.display_name
-                    items.append(Static(rf"  \[{key}]       {label}", classes="help-row"))
+                    items.append(Static(self._format_key_row(key, label), classes="help-row"))
         except Exception:
             pass
         return items
@@ -100,7 +108,7 @@ class HelpOverlay(ModalScreen):
 
                     # Add extension help items
                     for key, desc in ext.get_help_items():
-                        sections.append(Static(rf"  \[{key}]       {desc}", classes="help-row"))
+                        sections.append(Static(self._format_key_row(key, desc), classes="help-row"))
         except Exception:
             pass
         return sections
@@ -130,8 +138,8 @@ class HelpOverlay(ModalScreen):
             Static("Armed Mode", classes="section-title"),
             Static(r"  \[A]       Arm (30s countdown)", classes="help-row"),
             Static(r"  \[Esc]     Disarm (when armed)", classes="help-row"),
-            Static("  Destructive actions only work when armed.", classes="help-row"),
-            Static("  Footer shows ARMED + countdown when active.", classes="help-row"),
+            Static("            Destructive actions require armed mode.", classes="help-row"),
+            Static("            Footer shows ARMED + countdown when active.", classes="help-row"),
 
             # Clusters
             Static("Clusters", classes="section-title"),

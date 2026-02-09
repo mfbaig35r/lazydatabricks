@@ -199,13 +199,13 @@ class BillingScreen(BaseScreen):
             )
             return
 
-        for sku in costs:
+        for i, sku in enumerate(costs):
             table.add_row(
                 sku.sku_name[:30],
                 sku.usage_type[:15],
                 sku.dbu_display,
                 f"[green]{sku.cost_display}[/]",
-                key=sku.sku_name,
+                key=f"{i}",
             )
 
         if costs:
@@ -215,10 +215,10 @@ class BillingScreen(BaseScreen):
     def _select_sku(self, sku: SkuCostSummary) -> None:
         """Select a SKU and load its breakdown."""
         self._selected_sku = sku
-        self._load_breakdown(sku.sku_name, sku.usage_type, sku.billing_origin_product)
+        self._load_breakdown(sku.sku_name, sku.usage_type)
 
     @work(thread=True)
-    def _load_breakdown(self, sku_name: str, usage_type: str, billing_origin_product: str) -> None:
+    def _load_breakdown(self, sku_name: str, usage_type: str) -> None:
         """Load usage breakdown for selected SKU."""
         try:
             billing_ops = self.lazybricks_app.get_extension_ops("billing")
@@ -226,7 +226,7 @@ class BillingScreen(BaseScreen):
                 return
 
             breakdowns = billing_ops.get_usage_breakdown(
-                sku_name, usage_type, billing_origin_product, self._time_window
+                sku_name, usage_type, self._time_window
             )
             self.app.call_from_thread(self._update_breakdown_table, breakdowns)
         except Exception as e:
@@ -325,12 +325,13 @@ class BillingScreen(BaseScreen):
         table = event.data_table
 
         if table.id == "sku-table" and event.row_key and event.row_key.value:
-            sku = next(
-                (s for s in self._sku_costs if s.sku_name == event.row_key.value),
-                None,
-            )
-            if sku:
-                self._select_sku(sku)
+            # Key is the index into self._sku_costs
+            try:
+                idx = int(event.row_key.value)
+                if 0 <= idx < len(self._sku_costs):
+                    self._select_sku(self._sku_costs[idx])
+            except (ValueError, IndexError):
+                pass
         elif table.id == "breakdown-table" and event.row_key and event.row_key.value:
             # Key is the index into self._breakdowns
             try:
