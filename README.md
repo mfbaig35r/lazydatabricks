@@ -1,4 +1,4 @@
-# LazyBricks 🧱
+# LazyDatabricks 🧱
 
 A keyboard-first TUI for Databricks — **lazygit for your data platform**.
 
@@ -14,7 +14,7 @@ A keyboard-first TUI for Databricks — **lazygit for your data platform**.
 
 ```bash
 # Install
-pip install lazybricks
+pip install lazydatabricks
 
 # Or from source
 pip install -e ".[dev]"
@@ -24,21 +24,21 @@ export DATABRICKS_HOST=https://adb-xxx.azuredatabricks.net
 export DATABRICKS_TOKEN=dapi...
 
 # Launch TUI (default)
-lazybricks
+lazydatabricks
 
 # Or use specific profile
-lazybricks --profile staging
+lazydatabricks --profile staging
 
 # CLI mode (non-interactive)
-lazybricks health      # Health snapshot
-lazybricks clusters    # List clusters
-lazybricks jobs        # List jobs
-lazybricks test        # Test connection
+lazydatabricks health      # Health snapshot
+lazydatabricks clusters    # List clusters
+lazydatabricks jobs        # List jobs
+lazydatabricks test        # Test connection
 ```
 
 ## TUI Overview
 
-LazyBricks provides a keyboard-driven interface with five main screens:
+LazyDatabricks provides a keyboard-driven interface with five main screens:
 
 - **Home (h)** — Health dashboard showing workspace identity, Spark connectivity, cluster/job/warehouse summaries
 - **Clusters (c)** — List and manage compute clusters with start/terminate/restart actions
@@ -48,7 +48,7 @@ LazyBricks provides a keyboard-driven interface with five main screens:
 
 ## Safety Model: Armed Mode
 
-LazyBricks defaults to **READ-ONLY** mode. All destructive actions require explicitly arming:
+LazyDatabricks defaults to **READ-ONLY** mode. All destructive actions require explicitly arming:
 
 1. Press `A` to arm (30-second timer starts)
 2. Header shows red "ARMED (Xs)" countdown
@@ -137,13 +137,13 @@ Destructive actions include:
 ## Architecture
 
 ```
-src/lazybricks/
+src/lazydatabricks/
 ├── models/       # Data models — stable internal structs
 │   ├── cluster.py    # ClusterSummary, ClusterState, ClusterFlag
 │   ├── job.py        # JobSummary, RunSummary, RunDetail
 │   ├── warehouse.py  # WarehouseSummary, WarehouseState
 │   ├── health.py     # HealthSnapshot, SparkStatus
-│   └── config.py     # LazyBricksConfig, DatabricksProfile
+│   └── config.py     # LazyDatabricksConfig, DatabricksProfile
 ├── api/          # API client layer
 │   ├── client.py     # DatabricksClient (SDK wrapper)
 │   ├── clusters.py   # ClusterOps
@@ -153,7 +153,7 @@ src/lazybricks/
 │   ├── logs.py       # LogOps
 │   └── guard.py      # ArmedGuard (safety model)
 └── tui/          # Textual TUI
-    ├── app.py        # LazyBricksApp main class
+    ├── app.py        # LazyDatabricksApp main class
     ├── theme.py      # Colors and CSS
     ├── screens/      # Screen implementations
     │   ├── home.py
@@ -171,7 +171,7 @@ src/lazybricks/
 
 ## Configuration
 
-LazyBricks uses the same configuration as the Databricks SDK:
+LazyDatabricks uses the same configuration as the Databricks SDK:
 
 1. **Environment variables** (highest priority)
    ```bash
@@ -194,8 +194,8 @@ LazyBricks uses the same configuration as the Databricks SDK:
 
 3. **CLI flags**
    ```bash
-   lazybricks --host https://... --token dapi... --cluster-id 0123...
-   lazybricks --profile staging
+   lazydatabricks --host https://... --token dapi... --cluster-id 0123...
+   lazydatabricks --profile staging
    ```
 
 ## Development
@@ -208,10 +208,10 @@ pip install -e ".[dev]"
 pytest tests/ -v
 
 # Type checking
-mypy src/lazybricks
+mypy src/lazydatabricks
 
 # Linting
-ruff check src/lazybricks
+ruff check src/lazydatabricks
 ```
 
 ## Requirements

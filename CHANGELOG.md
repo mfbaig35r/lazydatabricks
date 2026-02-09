@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to LazyBricks will be documented in this file.
+All notable changes to LazyDatabricks will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
@@ -67,11 +67,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Connection testing
 
 **CLI Mode**
-- `lazybricks` - Launch TUI (default)
-- `lazybricks health` - Print health snapshot
-- `lazybricks clusters` - List clusters
-- `lazybricks jobs` - List jobs
-- `lazybricks test` - Test connection
+- `lazydatabricks` - Launch TUI (default)
+- `lazydatabricks health` - Print health snapshot
+- `lazydatabricks clusters` - List clusters
+- `lazydatabricks jobs` - List jobs
+- `lazydatabricks test` - Test connection
 
 **Testing**
 - 40 unit tests covering ArmedGuard, model display properties, keybindings

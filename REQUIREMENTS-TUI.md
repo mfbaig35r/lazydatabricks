@@ -1,21 +1,21 @@
-# LazyBricks TUI — Implementation Requirements
+# LazyDatabricks TUI — Implementation Requirements
 
 > **Audience**: Claude Code (or any implementation agent)
-> **Scope**: Build the Textual-based TUI for LazyBricks. The data models and API layer are complete.
+> **Scope**: Build the Textual-based TUI for LazyDatabricks. The data models and API layer are complete.
 > **Date**: 2025-02-05
 
 ---
 
 ## 1. Context & What Already Exists
 
-LazyBricks is a keyboard-first TUI for Databricks operations, inspired by lazygit/lazydocker. The philosophy is **read-first, act-second** with an armed-mode safety model.
+LazyDatabricks is a keyboard-first TUI for Databricks operations, inspired by lazygit/lazydocker. The philosophy is **read-first, act-second** with an armed-mode safety model.
 
 ### Completed Layers (DO NOT MODIFY unless fixing bugs)
 
 ```
-src/lazybricks/
+src/lazydatabricks/
 ├── models/
-│   ├── config.py      # DatabricksProfile, LazyBricksConfig, AuthMethod
+│   ├── config.py      # DatabricksProfile, LazyDatabricksConfig, AuthMethod
 │   ├── cluster.py     # ClusterState, ClusterFlag, ClusterSummary, ClusterEvent
 │   ├── job.py         # RunState, RunResult, TriggerType, JobSummary, RunSummary, RunDetail, TaskSummary
 │   ├── warehouse.py   # WarehouseState, WarehouseSize, WarehouseSummary, WarehouseQuery
@@ -51,7 +51,7 @@ src/lazybricks/
 
 ### 2.1 File Structure
 
-Create these files inside `src/lazybricks/tui/`:
+Create these files inside `src/lazydatabricks/tui/`:
 
 ```
 tui/
@@ -77,8 +77,8 @@ tui/
 ### 2.2 App Lifecycle
 
 ```python
-# In src/lazybricks/tui/app.py
-class LazyBricksApp(textual.app.App):
+# In src/lazydatabricks/tui/app.py
+class LazyDatabricksApp(textual.app.App):
     """Main application."""
     # Receives a DatabricksClient at construction
     # Owns the ArmedGuard instance
@@ -87,12 +87,12 @@ class LazyBricksApp(textual.app.App):
 
 ### 2.3 Integration with Existing app.py
 
-Update `src/lazybricks/app.py` so that the default command (no subcommand) launches the TUI:
+Update `src/lazydatabricks/app.py` so that the default command (no subcommand) launches the TUI:
 
 ```python
 # When no subcommand is given:
-from lazybricks.tui.app import LazyBricksApp
-app = LazyBricksApp(client=client)
+from lazydatabricks.tui.app import LazyDatabricksApp
+app = LazyDatabricksApp(client=client)
 app.run()
 ```
 
@@ -109,7 +109,7 @@ Keep existing CLI subcommands (health, clusters, jobs, test) working.
 **Layout**:
 ```
 ┌──────────────────────────────────────────────────┐
-│  LazyBricks          READ-ONLY    Profile: dev.  │  ← Header (persistent)
+│  LazyDatabricks          READ-ONLY    Profile: dev.  │  ← Header (persistent)
 ├──────────────────────────────────────────────────┤
 │                                                  │
 │  Workspace:  https://dbc-xxxxx.cloud.databricks  │
@@ -277,7 +277,7 @@ Keep existing CLI subcommands (health, clusters, jobs, test) working.
 
 ### 3.6 Config Screen
 
-**Data source**: `LazyBricksConfig`, `DatabricksClient.switch_profile()`
+**Data source**: `LazyDatabricksConfig`, `DatabricksClient.switch_profile()`
 
 **Layout**:
 ```
@@ -318,12 +318,12 @@ Keep existing CLI subcommands (health, clusters, jobs, test) working.
 Always visible at top of every screen.
 
 ```
-LazyBricks          🟢 READ-ONLY    Profile: dev
+LazyDatabricks          🟢 READ-ONLY    Profile: dev
 ```
 
 When armed:
 ```
-LazyBricks          🔴 ARMED (25s)   Profile: dev
+LazyDatabricks          🔴 ARMED (25s)   Profile: dev
 ```
 
 - The armed countdown should update every second (use `set_interval` or Textual timer).
@@ -445,7 +445,7 @@ This is critical for safety. Here's the full flow:
 Pressing `?` on any screen shows a modal overlay listing all keybindings:
 
 ```
-┌─────────────── LazyBricks Help ───────────────────┐
+┌─────────────── LazyDatabricks Help ───────────────────┐
 │                                                   │
 │  Navigation                                       │
 │    h     Home screen                              │
@@ -504,7 +504,7 @@ This allows testing the TUI without a real Databricks connection.
 
 The TUI is complete when:
 
-- [ ] `lazybricks` (no subcommand) launches the TUI
+- [ ] `lazydatabricks` (no subcommand) launches the TUI
 - [ ] Home screen shows health snapshot and auto-refreshes
 - [ ] All 6 screens are navigable via global hotkeys (h/c/j/w/l/config)
 - [ ] Clusters screen shows table, detail panel, and supports start/terminate/restart
@@ -526,7 +526,7 @@ The TUI is complete when:
 
 ## 11. Implementation Notes
 
-- **Start with the app shell**: Get `LazyBricksApp` launching with header, status bar, and home screen. Then add screens one at a time.
+- **Start with the app shell**: Get `LazyDatabricksApp` launching with header, status bar, and home screen. Then add screens one at a time.
 - **Use Textual CSS**: Define styles in the App or in external `.tcss` files, not inline.
 - **Reuse model display properties**: Every model has computed `.xxx_display` properties. Use them — don't reformat.
 - **Don't modify the models or API layers** unless you find a bug. If you need something the model doesn't provide, check if a display property already covers it.

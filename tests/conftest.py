@@ -1,4 +1,4 @@
-"""Pytest fixtures for LazyBricks tests.
+"""Pytest fixtures for LazyDatabricks tests.
 
 Provides mock fixtures for API layer to avoid hitting real Databricks.
 """
@@ -11,22 +11,22 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from lazybricks.api.client import DatabricksClient
-from lazybricks.api.guard import ArmedGuard
-from lazybricks.models.cluster import ClusterSummary, ClusterState, ClusterFlag
-from lazybricks.models.config import LazyBricksConfig, DatabricksProfile, AuthMethod
-from lazybricks.models.health import HealthSnapshot, SparkStatus
-from lazybricks.models.job import JobSummary, RunSummary, RunState, RunResult, TriggerType
-from lazybricks.models.warehouse import WarehouseSummary, WarehouseState
+from lazydatabricks.api.client import DatabricksClient
+from lazydatabricks.api.guard import ArmedGuard
+from lazydatabricks.models.cluster import ClusterSummary, ClusterState, ClusterFlag
+from lazydatabricks.models.config import LazyDatabricksConfig, DatabricksProfile, AuthMethod
+from lazydatabricks.models.health import HealthSnapshot, SparkStatus
+from lazydatabricks.models.job import JobSummary, RunSummary, RunState, RunResult, TriggerType
+from lazydatabricks.models.warehouse import WarehouseSummary, WarehouseState
 
 
 # ─── Configuration Fixtures ──────────────────────────────────────
 
 
 @pytest.fixture
-def mock_config() -> LazyBricksConfig:
-    """Create a mock LazyBricksConfig."""
-    return LazyBricksConfig(
+def mock_config() -> LazyDatabricksConfig:
+    """Create a mock LazyDatabricksConfig."""
+    return LazyDatabricksConfig(
         host="https://test-workspace.cloud.databricks.com",
         token="dapi_test_token",
         cluster_id="test-cluster-123",
@@ -50,7 +50,7 @@ def mock_config() -> LazyBricksConfig:
 
 
 @pytest.fixture
-def mock_client(mock_config: LazyBricksConfig) -> MagicMock:
+def mock_client(mock_config: LazyDatabricksConfig) -> MagicMock:
     """Create a mock DatabricksClient."""
     client = MagicMock(spec=DatabricksClient)
     client.config = mock_config

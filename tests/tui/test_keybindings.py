@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import pytest
 
-from lazybricks.tui.widgets.status_bar import (
+from lazydatabricks.tui.widgets.status_bar import (
     GLOBAL_BINDINGS,
     HOME_BINDINGS,
     CLUSTERS_BINDINGS,

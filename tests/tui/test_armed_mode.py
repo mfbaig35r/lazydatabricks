@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import pytest
 
-from lazybricks.api.guard import ArmedGuard
+from lazydatabricks.api.guard import ArmedGuard
 
 
 class TestArmedModeFlow:

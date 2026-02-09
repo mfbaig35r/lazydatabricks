@@ -1,5 +1,5 @@
 [project]
-name = "lazybricks"
+name = "lazydatabricks"
 version = "1.0.0"
 description = "A keyboard-first TUI for Databricks ops — lazygit for your data platform"
 readme = "README.md"
@@ -42,14 +42,14 @@ dev = [
 ]
 
 [project.scripts]
-lazybricks = "lazybricks.app:main"
+lazydatabricks = "lazydatabricks.app:main"
 
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/lazybricks"]
+packages = ["src/lazydatabricks"]
 
 [tool.ruff]
 line-length = 100

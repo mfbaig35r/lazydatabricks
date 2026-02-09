@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import pytest
 
-from lazybricks.models.health import HealthSnapshot, SparkStatus
+from lazydatabricks.models.health import HealthSnapshot, SparkStatus
 
 
 class TestHomeScreen:

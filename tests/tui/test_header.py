@@ -5,7 +5,7 @@ from __future__ import annotations
 import pytest
 from unittest.mock import MagicMock
 
-from lazybricks.api.guard import ArmedGuard
+from lazydatabricks.api.guard import ArmedGuard
 
 
 class TestHeader:
@@ -13,7 +13,7 @@ class TestHeader:
 
     def test_header_displays_workspace(self) -> None:
         """Header should display workspace info."""
-        from lazybricks.tui.widgets.header import Header
+        from lazydatabricks.tui.widgets.header import Header
 
         guard = ArmedGuard()
         header = Header(
@@ -27,7 +27,7 @@ class TestHeader:
 
     def test_header_armed_state_reactive(self) -> None:
         """Header armed display should be reactive."""
-        from lazybricks.tui.widgets.header import Header
+        from lazydatabricks.tui.widgets.header import Header
 
         guard = ArmedGuard()
         header = Header(guard=guard)
@@ -45,7 +45,7 @@ class TestHeader:
 
     def test_header_shows_countdown_when_armed(self) -> None:
         """Header should show countdown when armed."""
-        from lazybricks.tui.widgets.header import Header
+        from lazydatabricks.tui.widgets.header import Header
 
         guard = ArmedGuard(ttl_seconds=30)
         guard.arm()

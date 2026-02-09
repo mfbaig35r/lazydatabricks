@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import pytest
 
-from lazybricks.models.cluster import ClusterSummary, ClusterState, ClusterFlag
+from lazydatabricks.models.cluster import ClusterSummary, ClusterState, ClusterFlag
 
 
 class TestClustersScreen:
