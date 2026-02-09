@@ -219,6 +219,17 @@ ruff check src/lazydatabricks
 - Python 3.10+
 - Databricks workspace with API access
 
+## About
+
+LazyDatabricks is the keyboard-first companion for Databricks ops — because the web UI can be sluggish when you're bouncing between clusters, jobs, and logs. It's safe-by-default, with Armed Mode required for anything destructive.
+
+Part of a broader vision: MCP-based "conversational ops" for data engineering, where you ask for what you want in plain English, then execute confidently.
+
+**Maintainer:** Fahad Baig
+**Related:** Cognition Kernel Research • MCP-based conversational data engineering tooling
+
+Want to collaborate, integrate with MCP tooling, or share feedback? [Open an issue](https://github.com/mfbaig35r/lazydatabricks/issues) or reach out.
+
 ## License
 
 MIT
