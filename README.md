@@ -10,15 +10,32 @@ A keyboard-first TUI for Databricks — **lazygit for your data platform**.
 - **Spark-true, not API-true.** "Is my cluster usable?" matters more than "does the API say RUNNING?"
 - **Logs are the primary artifact.** One keystroke, not seven clicks.
 
+## Installation
+
+### Homebrew (macOS)
+
+```bash
+brew tap mfbaig35r/lazydatabricks
+brew install lazydatabricks
+```
+
+### pip
+
+```bash
+pip install lazydatabricks
+```
+
+### From Source
+
+```bash
+git clone https://github.com/mfbaig35r/lazybricks.git
+cd lazybricks
+pip install -e ".[dev]"
+```
+
 ## Quick Start
 
 ```bash
-# Install
-pip install lazydatabricks
-
-# Or from source
-pip install -e ".[dev]"
-
 # Configure (uses same env vars / .databrickscfg as Databricks SDK)
 export DATABRICKS_HOST=https://adb-xxx.azuredatabricks.net
 export DATABRICKS_TOKEN=dapi...
